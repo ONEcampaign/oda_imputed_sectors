@@ -47,3 +47,16 @@ There is a key difference between ONE’s approach and the (discontinued) OECD a
 ## Data sources
 This research uses data from the DAC Creditor Reporting System (CRS) and the Members Total Use of the Multilateral System database. The CRS is a database containing data on aid activities reported by the DAC members. The Members Total Use of the Multilateral System database contains data on core contributions
 to the budgets of multilateral agencies. Both databases are maintained by the OECD.
+
+
+## Using the tool
+This project uses `poetry` to manage python dependencies. It requires python>=3.10.
+
+After creating a virtual environment for this project, you can install project dependencies
+by running the following command with your terminal at the project root.
+
+You must have `poetry` installed in your environment first.
+
+```bash
+poetry install
+```

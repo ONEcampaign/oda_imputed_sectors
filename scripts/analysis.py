@@ -241,16 +241,16 @@ if __name__ == "__main__":
 
     # Get the spending shares for multilateral agencies by sector
     shares = get_multilateral_spending_shares(
-        start_year=2020,
-        end_year=2022,
+        start_year=2013,
+        end_year=2023,
         group_by="broad_sector",
         by_recipient=False,
     )
 
     # Get the spending values for imputed multilateral disbursements by sector
     imputed_spending = get_imputed_multilateral_disbursements_by_sector(
-        start_year=2020,
-        end_year=2022,
+        start_year=2013,
+        end_year=2023,
         prices="constant",
         base_year=2022,
         group_by="broad_sector",
@@ -258,9 +258,30 @@ if __name__ == "__main__":
 
     # Get the spending values for bilateral disbursements by sector
     bilateral_spending = get_bilateral_disbursements_by_sector(
-        start_year=2020,
-        end_year=2022,
+        start_year=2013,
+        end_year=2023,
         prices="constant",
         base_year=2022,
         group_by="broad_sector",
+    )
+
+    total = (
+        pd.concat(
+            [
+                imputed_spending.assign(
+                    value=lambda d: d.value.astype(float).fillna(0)
+                ),
+                bilateral_spending.assign(
+                    value=lambda d: d.value.astype(float).fillna(0)
+                ),
+            ],
+            ignore_index=True,
+        )
+        .groupby(["year", "purpose_name"], dropna=False, observed=True)["value"]
+        .sum()
+        .astype({"value": float})
+        .reset_index()
+        .fillna({"value": 0, "purpose_name": "Other sectors"})
+        .pivot(index="year", columns="purpose_name", values="value")
+        .reset_index()
     )
