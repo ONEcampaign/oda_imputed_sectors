@@ -136,3 +136,4 @@ dmypy.json
 *.feather
 raw_data/*parquet
 *.parquet
+/raw_data
